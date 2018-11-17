@@ -1,0 +1,12 @@
+c1 c1:r1
+c2 c2:r1
+c3 c3:r2
+c4 c4:r2
+r1 r1:s3 r1:c2 r1:c1
+r2 r2:s5 r2:c4 r2:c3
+s1 s1:s2
+s2 s2:r1
+s3 s3:s4
+s4 s4:r2
+s5 s5:s6
+s6 s6:s1
