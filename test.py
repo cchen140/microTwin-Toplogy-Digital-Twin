@@ -66,6 +66,7 @@ post1 = {"ssid": "r1",
         "heartbeat": True,
         "program": "move to c1",
         "devicetype": "robot",
+         "cyclingtime": "10",
         "date": datetime.datetime.utcnow()}
 
 devicecollection.insert(post)

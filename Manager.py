@@ -73,12 +73,13 @@ def net_node_add_to_graph(Net_Nodes):
 
 def get_links():
     """add link to the graph"""
-    node = connectdict.keys()
-    for i in range(0, len(node)):
-        connectlist = connectdict[node[i]]
+    #node = connectdict.keys()
+    #for i in range(0, len(node)):
+    for node in connectdict.keys():
+        connectlist = connectdict[node]
 
         for j in range(0, len(connectlist)):
-            G.add_edge(node[i], connectlist[j])
+            G.add_edge(node, connectlist[j])
 
 
 def remove_node(ssid):
@@ -118,7 +119,7 @@ def draw_Gui():
 
 def recover_linknode(ssid):
     """add the node and link back to the graph when these component are recovered"""
-    if (cachedict.has_key(ssid)):
+    if ssid in cachedict:
         connectdict.update({ssid: cachedict[ssid]})
         del cachedict[ssid]
         Net_Nodes.append(ssid)
@@ -134,7 +135,7 @@ def recover_linknode(ssid):
 def updateorcreate_cnc(Node_count):
     cnctotal = host_collection.find({"hosttype": "cnc"})
     for i in range(0, cnctotal.count()):
-        if (cncdict.has_key(cnctotal[i]["ssid"])):
+        if cnctotal[i]["ssid"] in cncdict:
             """Update existed cnc with real-time data in the database"""
             hostlocation = []
             cnc = cncdict[cnctotal[i]["ssid"]]
@@ -169,7 +170,7 @@ def updateorcreate_cnc(Node_count):
             CncEvent(EventType('add'), cnc.get_hostid(), time.time())
             logger.info("new cnc %s is added", cnctotal[i]["ssid"])
 
-        if ((cnc.get_heartbeat() == False) and (not (cachedict.has_key(cnc.get_hostid())))):
+        if ((cnc.get_heartbeat() == False) and (not (cnc.get_hostid() in cachedict))):
             """cnc is down and generate event ERROR"""
             logger.info("cnc %s is down", cnc.get_hostid())
             remove_links(cnc.get_hostid())
@@ -178,7 +179,7 @@ def updateorcreate_cnc(Node_count):
             Node_count = Node_count - 1
             # add a timer here, if the cnc is not recovered and wait timed out, cnc will generate event remove
 
-        if ((cachedict.has_key(cnc.get_hostid())) and (cnc.get_heartbeat() == True)):
+        if ((cnc.get_hostid() in cachedict) and (cnc.get_heartbeat() == True)):
             """cnc is recovered and generate event RECOVER"""
             logger.info("cnc %s is recovered", cnc.get_hostid())
             recover_linknode(cnc.get_hostid())
@@ -207,7 +208,7 @@ if (__name__ == '__main__'):
                 hostlocation.append(Host_to_Device_Connection)
 
             cnc = Cnc(post[i]["ssid"], post[i]["ipadd"], post[i]["macadd"], post[i]["program"], post[i]["heartbeat"],
-                      hostlocation, post[i]["drivelist"], post[i]["controlmode"])
+                      hostlocation, post[i]["drivelist"], post[i]["controlmode"], post[i]["hosttype"])
             cncdict.update({post[i]["ssid"]: cnc})
             CncEvent(EventType('add'), cnc.get_hostid(), time.time())
 
@@ -217,7 +218,7 @@ if (__name__ == '__main__'):
             stopper = Stopper(post[i]["ssid"], post[i]["state"], post[i]["heartbeat"])
 
         if (post[i]["devicetype"] == "robot"):
-            robot = Robot(post[i]["ssid"], post[i]["state"], post[i]["heartbeat"], post[i]["program"])
+            robot = Robot(post[i]["ssid"], post[i]["state"], post[i]["heartbeat"], post[i]["cyclingtime"], post[i]["program"])
 
     # Update based on the input (listener should be added in the future)
     time.sleep(5)

@@ -37,7 +37,8 @@ class Device(object):
 
 class Stopper(Device):
     def __init__(self, ssid, state, heartbeat):
-        super(Stopper, self).__init__(ssid, state, 'Stopper', heartbeat)
+        #TODO: Need to verify the vlue for cyclingtime (the last parameter)
+        super(Stopper, self).__init__(ssid, state, 'Stopper', heartbeat, 0)
 
 
 class Robot(Device):

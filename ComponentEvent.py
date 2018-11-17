@@ -52,7 +52,7 @@ class EventType(Enum):
     SETUP = 'setup' # Signifies that a component is being setup
     #heartbeat = 0
     
-    EMERGENCY STOP = 'emergency_stop' # Signifies that a component aborts operation and is placed into safe condition 
+    EMERGENCY_STOP = 'emergency_stop' # Signifies that a component aborts operation and is placed into safe condition
     #heartbeat = 0
     
     REPAIR = 'repair' # Signifies that a component has an intervention 
@@ -75,4 +75,4 @@ class StopperEvent(AbstractEvent):
 
 class RobotEvent(AbstractEvent):
     def __init__(self, eventtype, ssid, time):
-        super(RobotEvent,self).__init__(eventtype, 'rebot', ssid, time)
+        super(RobotEvent,self).__init__(eventtype, 'robot', ssid, time)
