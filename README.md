@@ -1,21 +1,20 @@
-# sdc
+```
+This project is cloned and developed based on https://github.com/JpKuo24/GlobalView
+```
 
-This is the central repo for the SDC (software-defined control) project.
-
-Python 2.7 is required. The code is NOT compatible with Python 3.
-
-# Packages
+## Brief
 globalview: prototype of global view based on the controller starting from scratch.
 
-onos: prototype of decision maker based on the ONOS controller, draft of the global view is also provided.
+## Dependency
+### Infrastructure
+- Python3
+- MongoDB
+### Python Package
+- pymongo
+- networkx_viewer (Use ```pip install networkx_viewer``` to install)
 
-# Clone and install
-For using Global view, you are supposed to install mongoDB in your computer and using $./mongod to run database first. 
 
-$ git clone git@github.com:JpKuo24/sdc.git
-
-$ cd sdc/globalview
-
-$ python test.py   # create data in the database
-
-$ python Manager.py
+## Start
+1. Start MongoDB: ```sudo mongod```
+2. Initialize DB: ```python test.py```
+3. Run the digital twin: ```python Manager.py```
