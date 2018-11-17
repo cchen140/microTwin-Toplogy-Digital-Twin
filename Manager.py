@@ -220,14 +220,18 @@ if (__name__ == '__main__'):
         if (post[i]["devicetype"] == "robot"):
             robot = Robot(post[i]["ssid"], post[i]["state"], post[i]["heartbeat"], post[i]["cyclingtime"], post[i]["program"])
 
+    # Demonstrate the case where C2 is down.
+    host_collection.update_one({"ssid": "c2"},
+                               {"$set": {"heartbeat": False}})
+
     # Update based on the input (listener should be added in the future)
     time.sleep(5)
     Node_count = updateorcreate_cnc(Node_count)
     # app.canvas.refresh() for gui
     draw_figure(pos)
 
-    # test of recovery
-    host_collection.update_one({"heartbeat": False},
+    # Bring C2 back
+    host_collection.update_one({"ssid": "c2"},
                                {"$set": {"heartbeat": True}})
     print(cachedict)
     print(Node_count)
